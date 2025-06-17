@@ -1,0 +1,18 @@
+-- objectives missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Objectives' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_objectives' as rule_id,
+    case
+        when coalesce(Objectives, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+
