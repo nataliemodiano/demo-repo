@@ -1,0 +1,31 @@
+-- Objectives --
+coalesce(p.objectives, 'not reported') as Objectives
+
+-- Scope included in stg protocol--
+
+-- Age included in stg protocol --
+
+-- Consent at age of majority --
+    case 
+        when pd.consent_at_age_of_majority = 'U' then 'not reported'
+        when pd.consent_at_age_of_majority = 'Y' then 'yes'
+        when pd.consent_at_age_of_majority = 'N' then 'no'
+    end as consent_at_age_of_majority
+
+-- Drug accountability --
+    case 
+        when pd.drug_accountability = 'NA' then 'not applicable'
+        when pd.drug_accountability = 'U' then 'not reported'
+        when pd.drug_accountability = 'Y' then 'yes'
+        when pd.drug_accountability = 'N' then 'no'
+        else 'not reported'
+    end as drug_accountability
+
+-- Involves therapy included in stg protocol? but doesn't follow format --
+    case 
+        when pd.involves_therapy = 'NA' then 'not applicable'
+        when pd.involves_therapy = 'U' then 'not reported'
+        when pd.involves_therapy = 'Y' then 'yes'
+        when pd.involves_therapy = 'N' then 'no'
+        else 'not reported'
+    end as involves_therapy
