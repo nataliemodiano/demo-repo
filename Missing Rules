@@ -106,6 +106,125 @@ select distinct
 from applicable_protocols
 
 
+-- Registration Center missing -- ???
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Registration Center' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_registration_center' as rule_id,
+    case
+        when registration_center <> 'Unspecified'  then 1
+        else 0
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
 
+
+-- involves correlates companions missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Involves Correlates Companions' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_involves_correlates_companions' as rule_id,
+    case
+        when coalesce(involves_correlates_companions, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+-- Data Monitoring missing -- ???
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Data Monitoring' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_data_monitoring' as rule_id,
+    case
+        when data_monitoring <> 'Unspecified'  then 1
+        else 0
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+-- Adjuvant missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Adjuvant' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_Adjuvant' as rule_id,
+    case
+        when adjuvant not in ('not reported', 'not applicable')  then 1
+        else 0
+    end as data_completeness_score,
+    case
+        when adjuvant <> 'not applicable' then 1 
+        else 0
+    end as expected_score
+from applicable_protocols
+
+
+-- Includes Specimen Banking Missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'includes_specimen_banking' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_includes_specimen_banking' as rule_id,
+    case
+        when coalesce(includes_specimen_banking, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+-- Companion study Missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'companion_study' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_companion_study' as rule_id,
+    case
+        when coalesce(companion_study, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+-- Precision trial Missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'precision_trial' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_precision_trial' as rule_id,
+    case
+        when coalesce(precision_trial, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
 
 
