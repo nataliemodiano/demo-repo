@@ -29,3 +29,46 @@ coalesce(p.objectives, 'not reported') as Objectives
         when pd.involves_therapy = 'N' then 'no'
         else 'not reported'
     end as involves_therapy
+
+-- Registration Center-- ???
+    coalesce(pd.registration_center, 'Unspecified') as registration_center
+
+-- Involves Correlates Companions --
+    case 
+        when pd.involves_correlates_companions = 'U' then 'not reported'
+        when pd.involves_correlates_companions = 'Y' then 'yes'
+        when pd.involves_correlates_companions = 'N' then 'no'
+    end as involves_correlates_companions
+
+-- Data Monitoring-- ???
+    coalesce(pd.data_monitoring, 'Unspecified') as data_monitoring
+
+-- Adjuvant --
+    case 
+        when pd.adjuvant = 'NA' then 'not applicable'
+        when pd.adjuvanty = 'U' then 'not reported'
+        when pd.adjuvant = 'Y' then 'yes'
+        when pd.adjuvant = 'N' then 'no'
+        else 'not reported'
+    end as adjuvant
+
+-- Includes specimen banking --
+    case
+        when pd.includes_specimen_banking = 'Y' then 'yes'
+        when pd.includes_specimen_banking = 'N' then 'no'
+        else coalesce(pd.includes_specimen_banking, 'not reported')
+    end as includes_specimen_banking
+
+-- Companion study --
+    case
+        when pd.companion_study = 'Y' then 'yes'
+        when pd.companion_study = 'N' then 'no'
+        else coalesce(pd.companion_study, 'not reported')
+    end as companion_study
+
+-- Precision trial --
+    case 
+        when pd.precision_trial = 'U' then 'not reported'
+        when pd.precision_trial = 'Y' then 'yes'
+        when pd.precision_trial = 'N' then 'no'
+    end as precision_trial
