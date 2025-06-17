@@ -15,4 +15,97 @@ select distinct
 from applicable_protocols
 
 
+-- scope missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Scope' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_scope' as rule_id,
+    case
+        when coalesce(Scope, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+-- Age Missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Age' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_age' as rule_id,
+    case
+        when Age <> 'not specified'  then 1
+        else 0
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+-- Consent at age of majority missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Consent at Age of Majority' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_consent_at_age_of_majority' as rule_id,
+    case
+        when coalesce(consent_at_age_of_majority, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+-- Drug accountability missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Drug Accountability' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_drug_accountability' as rule_id,
+    case
+        when drug_accountability not in ('not reported', 'not applicable')  then 1
+        else 0
+    end as data_completeness_score,
+    case
+        when drug_accountability <> 'not applicable' then 1 
+        else 0
+    end as expected_score
+from applicable_protocols
+
+
+-- Involves Therapy missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Involves Therapy' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_involves_therapy' as rule_id,
+    case
+        when involves_therapy not in ('not reported', 'not applicable')  then 1
+        else 0
+    end as data_completeness_score,
+    case
+        when involves_therapy <> 'not applicable' then 1 
+        else 0
+    end as expected_score
+from applicable_protocols
+
+
+
+
 
