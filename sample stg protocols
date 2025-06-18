@@ -1,5 +1,5 @@
 -- Objectives --
-coalesce(p.objectives, 'not reported') as Objectives
+coalesce(pd.objectives, 'not reported') as Objectives
 
 -- Scope included in stg protocol--
 
@@ -72,3 +72,79 @@ coalesce(p.objectives, 'not reported') as Objectives
         when pd.precision_trial = 'Y' then 'yes'
         when pd.precision_trial = 'N' then 'no'
     end as precision_trial
+
+-- Precision trial classification-- ???
+    coalesce(pd.precision_trial_classification, 'Unspecified') as precision_trial_classification
+
+-- Rare Disease --
+    case 
+        when pd.rare_disease = 'U' then 'not reported'
+        when pd.rare_disease = 'Y' then 'yes'
+        when pd.rare_disease = 'N' then 'no'
+    end as rare_disease
+
+-- skipped pragmatic trial --
+
+-- RC Total Accrual goal upper included in stg protocol --
+
+-- RC Annual Accrual goal --
+    coalesce(p.rc_annual_accrual_goal, 'not reported') as rc_annual_accrual_goal
+
+-- Accrual duration months --
+    coalesce(p.accrual_duration_months, 'not reported') as accrual_duration_months
+
+-- Priority --
+    coalesce(md.priority, 'not reported') as priority
+
+-- CTMC frequency --
+    coalesce(md.ctmc_frequency, 'not reported') as ctmc_frequency
+
+-- NCI ID --
+    case 
+        when md.nci_id like 'N/A%' then 'not applicable'
+        else coalesce(md.nci_id,'not reported')
+    end as nci_id
+
+-- Toxicity Scheme--
+    case 
+        when md.toxicity_scheme = 'U' then 'not reported'
+        else coalesce(md.toxicity_scheme, 'not reported')
+    end as toxicity_scheme
+
+-- Study Site Contact included in stg protocol --
+
+-- Sponsor Name included in stg protocol --
+
+-- Sponsor protocol no --
+    case 
+        when sponsor_protocol_no = 'N/A' then 'not applicable'
+        else coalesce(sponsor_protocol_no,'not reported')
+    end as sponsor_protocol_no
+
+-- Sponsor role --
+    coalesce(sponsor_role, 'not reported') as sponsor_role
+
+-- Principal sponsor -- included in stg protocol but as name of principal sponsor?
+    case
+        when ps.principal_sponsor = 'Y' then 'yes'
+        when ps.principal_sponsor = 'N' then 'no'
+        else coalesce(ps.principal_sponsor, 'not reported')
+    end as principal sponsor
+
+-- (Disease) Description --
+    with Description as (
+    select
+        protocol_id,
+        listagg(description,'; ') within group (order by description) as Description
+    from {{ source("oncore", "sv_pcl_disease_diagnosis") }}
+    group by protocol_id
+    ),
+    coalesce(description, 'not reported') as Description
+
+-- SKIPPING IND and IDE--
+
+-- Institution Name --
+    coalesce(institution_name, 'not reported' as institution_name)
+
+-- Study Sites --
+    coalesce(study_sites, 'not reported' as study_sites)
