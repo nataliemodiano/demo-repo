@@ -132,19 +132,12 @@ coalesce(pd.objectives, 'not reported') as Objectives
     end as principal sponsor
 
 -- (Disease) Description --
-    with Description as (
-    select
-        protocol_id,
-        listagg(description,'; ') within group (order by description) as Description
-    from {{ source("oncore", "sv_pcl_disease_diagnosis") }}
-    group by protocol_id
-    ),
     coalesce(description, 'not reported') as Description
 
 -- SKIPPING IND and IDE--
 
 -- Institution Name --
-    coalesce(institution_name, 'not reported' as institution_name)
+    coalesce(institution_name, 'not reported') as institution_name
 
 -- Study Sites --
-    coalesce(study_sites, 'not reported' as study_sites)
+    coalesce(study_sites, 'not reported') as study_sites
