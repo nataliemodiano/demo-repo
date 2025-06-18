@@ -216,7 +216,7 @@ select distinct
     protocol_no as associated_protocol,
     'protocol' as data_component_name,
      protocol_no as component_id,
-    'precision_trial' as field_name,
+    'Precision trial' as field_name,
     'pc console > details' as oncore_console_location,
     'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
     'missing_precision_trial' as rule_id,
@@ -227,4 +227,286 @@ select distinct
     1 as expected_score
 from applicable_protocols
 
+
+-- Precision trial classification missing -- ???
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Precision Trial Classification' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_precision_trial_classification' as rule_id,
+    case
+        when coalesce(precision_trial_classification, 'Unspecified') <> 'Unspecified'  then 1
+        else 0
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+-- Rare Disease Missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Rare disease' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_rare_disease' as rule_id,
+    case
+        when coalesce(rare_disease, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+-- skipped Pragmatic Trial --
+
+-- RC Total Accrual Goal Upper missing --
+-- require only for oncology for now, CHANGE EXISTING RULE TO SPECIFICALLY LOWER --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'RC Total Accrual Goal (Upper)' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_rc_total_accrual_goal_upper' as rule_id,
+    case
+        when library = 'Oncology' and rc_total_accrual_goal_upper is not null  then 1
+        else 0
+    end as data_completeness_score,
+    case 
+        when library = 'Oncology' then 1 
+        else 0
+    end as expected_score
+from applicable_protocols
+
+-- RC annual accrual goal Missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'RC Annual Accrual Goal' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_rc_annual_accrual_goal' as rule_id,
+    case
+        when coalesce(rc_annual_accrual_goal, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+-- Accrual duration months Missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Accrual Duration (Months)' as field_name,
+    'pc console > details' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_accrual_duration_months' as rule_id,
+    case
+        when coalesce(accrual_duration_months, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+-- Priority Missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Priority' as field_name,
+    'pc console > management' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_priority' as rule_id,
+    case
+        when coalesce(priority, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+-- CTMC Frequency Missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'CTMC Frequency' as field_name,
+    'pc console > management' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_ctmc_frequency' as rule_id,
+    case
+        when coalesce(ctmc_frequency, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+-- NCI ID missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'NCI ID' as field_name,
+    'pc console > management' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_nci_id' as rule_id,
+    case
+        when nci_id not in ('not reported', 'not applicable')  then 1
+        else 0
+    end as data_completeness_score,
+    case
+        when nci_id <> 'not applicable' then 1 
+        else 0
+    end as expected_score
+from applicable_protocols
+
+-- Toxicity Scheme Missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Toxicity Scheme' as field_name,
+    'pc console > management' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_toxicity_scheme' as rule_id,
+    case
+        when coalesce(toxicity_scheme, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+-- Study Site Contact Missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Study Site Contact' as field_name,
+    'pc console > staff' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_study_site_contact' as rule_id,
+    case
+        when coalesce(study_site_contact, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+-- Sponsor Name Missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Sponsor Name' as field_name,
+    'pc console > sponsor' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_sponsor_name' as rule_id,
+    case
+        when coalesce(sponsor_name, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+-- Sponsor Protocol No missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Sponsor Protocol No' as field_name,
+    'pc console > sponsor' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_sponsor_protocol_no' as rule_id,
+    case
+        when sponsor_protocol_no not in ('not reported', 'not applicable')  then 1
+        else 0
+    end as data_completeness_score,
+    case
+        when sponsor_protocol_no <> 'not applicable' then 1 
+        else 0
+    end as expected_score
+from applicable_protocols
+
+
+-- Sponsor Role Missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Sponsor Role' as field_name,
+    'pc console > sponsor role' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_sponsor_role' as rule_id,
+    case
+        when coalesce(sponsor_role, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+-- Principal Sponsor Missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Principal Sponsor' as field_name,
+    'pc console > sponsor' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_principal_sponsor' as rule_id,
+    case
+        when coalesce(principal_sponsor, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+-- SKIPPING IND and IDE--
+
+
+-- Institution Name Missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Institution Name' as field_name,
+    'pc console > institution' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_institution_name' as rule_id,
+    case
+        when coalesce(institution_name, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
+
+
+-- Study Sites Missing --
+select distinct
+    protocol_no as associated_protocol,
+    'protocol' as data_component_name,
+     protocol_no as component_id,
+    'Study Sites' as field_name,
+    'pc console > institution' as oncore_console_location,
+    'https://oncore.ynhh.org/smrs/PRControlServlet?hdn_function=PROTOCOL_INQUIRY&hdn_function_type=INQUIRY&protocol_id=' || protocol_id || '&console=PC' as oncore_console_link,
+    'missing_study_sites' as rule_id,
+    case
+        when coalesce(study_sites, 'not reported') = 'not reported' then 0
+        else 1
+    end as data_completeness_score,
+    1 as expected_score
+from applicable_protocols
 
